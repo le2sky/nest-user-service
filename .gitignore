@@ -34,9 +34,6 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-.prettierrc
 
-.package-lock.json
-
-.eslintrc.js
-
+# config file
+**/*.env
