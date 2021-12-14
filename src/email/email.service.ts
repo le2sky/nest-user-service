@@ -30,8 +30,7 @@ export class EmailService {
     emailAddr: string,
     signupVerifyToken: string,
   ) {
-    const baseUrl = ''; //config 에서 작성 예정,
-    //apply test
+    const baseUrl = this.config.baseUrl;
     const url = `${baseUrl}/users/email-verifiy?signupVerifyToken=${signupVerifyToken}`;
 
     const mailOptions: EmailOptions = {
