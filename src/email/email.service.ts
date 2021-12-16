@@ -44,6 +44,7 @@ export class EmailService {
     };
     return await this.send(mailOptions);
   }
+  //send는 private로 캡슐화하는게 좋음
 
   private async send(mailOptions: EmailOptions) {
     return await this.transporter.sendMail(mailOptions);
