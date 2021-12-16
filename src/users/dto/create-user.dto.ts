@@ -40,7 +40,7 @@ export class CreateUserDto {
   @MaxLength(60)
   public readonly email: string;
 
-  // 이부분 다시 구현 필요 엣지 케이스 확인 + Internal server error 나는데
+  // 이부분 다시 구현 필요 케이스 확인 + Internal server error 나는데
   // 디버깅 필요할듯
   // @Transform(({ value }: { value: string }) => {
   //   [...value.trim()].forEach((item: string, index: number, arr: string[]) => {
