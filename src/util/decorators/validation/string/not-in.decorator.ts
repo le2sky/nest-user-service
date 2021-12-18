@@ -7,7 +7,6 @@ import {
 //검사할 대상에 target이 존재하는지 검사하는 기능을합니다.
 export function NotIn(property: string, validationOptions?: ValidationOptions) {
   return (object: Object, propertyName: string) => {
-    console.log(object);
     registerDecorator({
       name: 'NotIn',
       target: object.constructor,

@@ -6,7 +6,7 @@ import * as uuid from 'uuid';
 export class UsersService {
   constructor(private readonly emailService: EmailService) {}
 
-  //@ user find -> save -> email verify with token
+  //user find -> save -> email verify with token
   async createUser(name: string, email: string, password: string) {
     await this.checkUserExists(email);
     const signupVerifyToken = uuid.v1();
