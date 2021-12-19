@@ -6,6 +6,10 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
+  // @Get()
+  // public getUser() {
+  //   return 'hi';
+  // }
 
   @Post()
   public async createUser(@Body() dto: CreateUserDto): Promise<void> {

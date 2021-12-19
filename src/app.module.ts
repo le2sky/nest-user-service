@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import emailConfig from './config/emailConfig';
-import { EmailModule } from './email/email.module';
 import { validationSchema } from './config/validationSchema';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { validationSchema } from './config/validationSchema';
       validationSchema,
     }),
     UsersModule,
-    EmailModule,
+    TypeOrmModule.forRoot(),
   ],
   controllers: [],
   providers: [],
