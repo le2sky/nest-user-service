@@ -1,5 +1,10 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthService } from 'src/auth/auth.service';
 import { EmailService } from 'src/email/email.service';
 import { Connection, Repository } from 'typeorm';
 import { ulid } from 'ulid';
@@ -13,6 +18,7 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
     private connection: Connection,
+    private authService: AuthService,
   ) {}
 
   /*
@@ -72,6 +78,30 @@ export class UsersService {
     //   email,
     //   signupVerifyToken,
     // );
+  }
+
+  async verifyEmail(signupVerifyToken: string): Promise<string> {
+    const user = await this.usersRepository.findOne({ signupVerifyToken });
+    if (!user) {
+      throw new NotFoundException('User does not exist');
+    }
+    return this.authService.login({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+  }
+
+  async login(email: string, password: string): Promise<string> {
+    const user = await this.usersRepository.findOne({ email });
+    if (!user) {
+      throw new NotFoundException('User does not exist');
+    }
+    return this.authService.login({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    });
   }
 }
 
