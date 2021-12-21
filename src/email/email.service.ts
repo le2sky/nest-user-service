@@ -1,10 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import Mail from 'nodemailer/lib/mailer';
 import * as nodemailer from 'nodemailer';
 import emailConfig from 'src/config/emailConfig';
 import { ConfigType } from '@nestjs/config';
 
 interface EmailOptions {
+  from: string;
   to: string;
   subject: string;
   html: string;
@@ -18,6 +19,9 @@ export class EmailService {
     @Inject(emailConfig.KEY) private config: ConfigType<typeof emailConfig>,
   ) {
     this.transporter = nodemailer.createTransport({
+      host: config.host,
+      port: 587,
+      secure: false,
       service: config.service,
       auth: {
         user: config.auth.user,
@@ -32,8 +36,8 @@ export class EmailService {
   ) {
     const baseUrl = this.config.baseUrl;
     const url = `${baseUrl}/users/email-verifiy?signupVerifyToken=${signupVerifyToken}`;
-
     const mailOptions: EmailOptions = {
+      from: `${this.config.auth.user}@myapp.com`,
       to: emailAddr,
       subject: '가입 인증 메일',
       html: `
@@ -42,10 +46,14 @@ export class EmailService {
             </form>
           `,
     };
-    return await this.send(mailOptions);
+    await this.send(mailOptions);
   }
   //send는 private로 캡슐화하는게 좋음
   private async send(mailOptions: EmailOptions) {
-    return await this.transporter.sendMail(mailOptions);
+    try {
+      await this.transporter.sendMail(mailOptions);
+    } catch (e) {
+      Logger.warn(e);
+    }
   }
 }

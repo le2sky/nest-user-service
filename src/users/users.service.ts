@@ -34,9 +34,9 @@ export class UsersService {
 
     const signupVerifyToken = uuid.v1();
 
-    await this.saveUser(name, email, password, signupVerifyToken);
+    //await this.saveUser(name, email, password, signupVerifyToken);
 
-    await this.sendMemberJoinEmail(email, signupVerifyToken);
+    return await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
   private async checkUserExists(emailAddr: string): Promise<boolean> {
@@ -74,10 +74,10 @@ export class UsersService {
   }
 
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
-    // await this.emailService.sendMemberJoinVerification(
-    //   email,
-    //   signupVerifyToken,
-    // );
+    await this.emailService.sendMemberJoinVerification(
+      email,
+      signupVerifyToken,
+    );
   }
 
   async verifyEmail(signupVerifyToken: string): Promise<string> {
