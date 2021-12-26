@@ -10,7 +10,7 @@ import { EmailModule } from './email/email.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `${__dirname}/config/env/.${process.env.NODE_ENV}.env`,
+      envFilePath: `${__dirname}/config//env/.${process.env.NODE_ENV}.env`,
       load: [emailConfig, authConfig],
       isGlobal: true,
       validationSchema,

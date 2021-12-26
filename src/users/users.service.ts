@@ -34,7 +34,7 @@ export class UsersService {
 
     const signupVerifyToken = uuid.v1();
 
-    //await this.saveUser(name, email, password, signupVerifyToken);
+    await this.saveUser(name, email, password, signupVerifyToken);
 
     return await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
@@ -73,8 +73,11 @@ export class UsersService {
     }
   }
 
-  private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
-    await this.emailService.sendMemberJoinVerification(
+  private async sendMemberJoinEmail(
+    email: string,
+    signupVerifyToken: string,
+  ): Promise<string> {
+    return await this.emailService.sendMemberJoinVerification(
       email,
       signupVerifyToken,
     );
@@ -85,11 +88,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User does not exist');
     }
-    return this.authService.login({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    });
+    return '회원가입에 성공하셨습니다.';
   }
 
   async login(email: string, password: string): Promise<string> {
