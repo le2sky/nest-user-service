@@ -10,6 +10,7 @@ import { Connection, Repository } from 'typeorm';
 import { ulid } from 'ulid';
 import * as uuid from 'uuid';
 import { UserEntity } from './entity/user.entity';
+import { UserInfo } from './interface/UseInfo';
 
 @Injectable()
 export class UsersService {
@@ -102,35 +103,52 @@ export class UsersService {
       name: user.name,
     });
   }
-}
 
-/*
-private async saveUserUsingTransaction(name: string, email: string, password: string, signupVerifyToken: string) {
-  await this.connection.transaction(async manager => {
+  async getUserInfo(userId: string): Promise<UserInfo> {
+    const user = await this.usersRepository.findOne({ id: userId });
+
+    if (!user) {
+      throw new NotFoundException('User does not exist');
+    }
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+  }
+
+  //사용되지 않습니다.
+  private async saveUserUsingTransaction(
+    name: string,
+    email: string,
+    password: string,
+    signupVerifyToken: string,
+  ) {
+    await this.connection.transaction(async (manager) => {
+      const user = new UserEntity();
+      user.id = ulid();
+      user.name = name;
+      user.email = email;
+      user.password = password;
+      user.signupVerifyToken = signupVerifyToken;
+
+      await manager.save(user);
+
+      // throw new InternalServerErrorException();
+    });
+  }
+  private async saveUserUsingRepository(
+    name: string,
+    email: string,
+    password: string,
+    signupVerifyToken: string,
+  ) {
     const user = new UserEntity();
     user.id = ulid();
     user.name = name;
     user.email = email;
     user.password = password;
     user.signupVerifyToken = signupVerifyToken;
-
-    await manager.save(user);
-
-    // throw new InternalServerErrorException();
-  })
+    await this.usersRepository.save(user);
+  }
 }
-  // private async saveUser(
-  //   name: string,
-  //   email: string,
-  //   password: string,
-  //   signupVerifyToken: string,
-  // ) {
-  //   const user = new UserEntity();
-  //   user.id = ulid();
-  //   user.name = name;
-  //   user.email = email;
-  //   user.password = password;
-  //   user.signupVerifyToken = signupVerifyToken;
-  //   await this.usersRepository.save(user);
-  // }
-  */

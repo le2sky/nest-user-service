@@ -2,25 +2,33 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   HttpCode,
   Logger,
+  Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { OptimisticLockVersionMismatchError } from 'typeorm';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserLoginDto } from './dto/user-login.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { UserInfo } from './interface/UseInfo';
 import { UsersService } from './users.service';
 
+@UseGuards(AuthGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
-  @Get()
-  public test() {
-    Logger.log('good gety');
-    return 'test';
+  @Get(':id')
+  async getUserInfo(@Param('id') userId: string): Promise<UserInfo> {
+    return this.usersService.getUserInfo(userId);
   }
 
   @Post()
