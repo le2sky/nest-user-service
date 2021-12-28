@@ -1,6 +1,5 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { verify } from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import authConfig from 'src/config/authConfig';
 interface User {
