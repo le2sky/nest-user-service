@@ -6,6 +6,10 @@ import { validationSchema } from './config/validationSchema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import authConfig from './config/authConfig';
 import { EmailModule } from './email/email.module';
+import { HealthCheckController } from './health-check/health-check.controller';
+import { TerminusModule } from '@nestjs/terminus';
+import { HttpModule } from '@nestjs/axios';
+import { DogHealthIndicator } from './health-check/dog.health';
 
 @Module({
   imports: [
@@ -31,8 +35,10 @@ import { EmailModule } from './email/email.module';
     TypeOrmModule.forRoot(),
     UsersModule,
     EmailModule,
+    TerminusModule,
+    HttpModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [HealthCheckController],
+  providers: [DogHealthIndicator],
 })
 export class AppModule {}
