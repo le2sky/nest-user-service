@@ -10,6 +10,7 @@ import { HealthCheckController } from './health-check/health-check.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { DogHealthIndicator } from './health-check/dog.health';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { DogHealthIndicator } from './health-check/dog.health';
     EmailModule,
     TerminusModule,
     HttpModule,
+    CqrsModule,
   ],
   controllers: [HealthCheckController],
   providers: [DogHealthIndicator],
