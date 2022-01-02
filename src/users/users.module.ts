@@ -10,6 +10,7 @@ import { UserEntity } from './entity/user.entity';
 import { UsersController } from './users.controller';
 import { UserEventsHandler } from './event/user-events.handler';
 import { GetUserInfoQueryHandler } from './query/get-user-info.handler';
+import { CqrsModule } from '@nestjs/cqrs';
 
 const commandHandler = [
   CreateUserHandler,
@@ -21,7 +22,12 @@ const commandHandler = [
 const queryHandler = [GetUserInfoQueryHandler];
 
 @Module({
-  imports: [EmailModule, TypeOrmModule.forFeature([UserEntity]), AuthModule],
+  imports: [
+    EmailModule,
+    TypeOrmModule.forFeature([UserEntity]),
+    AuthModule,
+    CqrsModule,
+  ],
   controllers: [UsersController],
   providers: [UserEventsHandler, ...commandHandler, ...queryHandler],
 })
